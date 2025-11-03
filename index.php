@@ -1,8 +1,23 @@
 <?php
-  $url = "https://dragonball-api.com/api/characters"; // URL dell'API
-  $response = file_get_contents($url); // Fa la chiamata HTTP (come “fetch” in JavaScript).
-  $data = json_decode($response, true); // Converte il JSON in un array
-  $characters = $data["items"]; // Estraggo dall'array i personaggi
+  $search = $_POST['personaggioInput'] ?? '';
+
+  $filter = !empty($search) ? $search : 'a';
+
+  $url = "https://dragonball-api.com/api/characters?name=" . urlencode($filter);
+
+  $response = @file_get_contents($url);
+  $characters = [];
+
+  if ($response !== false) {
+    $data = json_decode($response, true);
+    
+    if (is_array($data)) {
+      if (isset($data[0])) 
+        $characters = $data;
+      elseif (isset($data['data']) && is_array($data['data'])) 
+        $characters = $data['data'];
+    }
+  }
 ?>
 
 <!DOCTYPE html>
