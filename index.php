@@ -32,17 +32,34 @@
   <body>
     <h1>Personaggi di Dragon Ball</h1>
 
+    <!-- Ricerca personaggio -->
+    <?php echo '<form method="POST" class="text-center">
+                  <input type="text" name="personaggioInput" placeholder="Cerca un personaggio..." value="' .htmlspecialchars($search) . '">
+                  <button type="submit">Cerca</button>
+                </form>'; ?>
+
+    <!-- Linea di TEST, per vedere l'URL a cui è fatta la richiesta -->
+    <!-- <?php
+      echo '<p>' .htmlspecialchars($url) . '</p>'
+    ?> -->
+    
     <div class="grid">
-      <?php foreach ($characters as $char): ?> <!--  Creo una card per ogni personaggio -->
-        <div class="card">
-          <img src="<?= htmlspecialchars($char['image']) ?>" alt="<?= htmlspecialchars($char['name']) ?>">
-          
-          <div class="text-center">
-            <div class="name"><?= htmlspecialchars($char['name']) ?></div>
-            <div class="race"><?= htmlspecialchars($char['race']) ?></div>
+      <?php if (!empty($characters) && is_array($characters)): ?> <!-- Se ci sono dei personaggi da mostrare -->
+        <?php foreach ($characters as $char): ?> <!-- Per ogni personaggio creo una card -->
+          <div class="card">
+            <img src="<?= htmlspecialchars($char['image']) ?>" alt="<?= htmlspecialchars($char['name']) ?>">
+            
+            <div class="text-center">
+              <div class="name"><?= htmlspecialchars($char['name']) ?></div>
+              <div class="race"><?= htmlspecialchars($char['race']) ?></div>
+            </div>
           </div>
+        <?php endforeach; ?>
+      <?php else: ?> <!-- Se NON ci sono personaggi -->
+        <div class="no-results text-center">
+          <p>Nessun personaggio trovato! 😢</p>
         </div>
-      <?php endforeach; ?>
+      <?php endif; ?>
     </div>
   </body>
 </html>
