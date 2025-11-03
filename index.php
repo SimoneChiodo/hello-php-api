@@ -1,7 +1,7 @@
 <?php
   // Input dell'utente
-  $search = $_POST['personaggioInput'] ?? '';
-  $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+  $search = $_GET['personaggioInput'] ?? ''; // $_POST: prende i dati dal body; $_GET: prende i parametri dalla query string
+  $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
   // Costruzione dell'URL
   if (empty($search)) // Se l'utente NON ha cercato un personaggio
@@ -42,7 +42,7 @@
     <h1>Personaggi di Dragon Ball</h1>
 
     <!-- Ricerca personaggio -->
-    <?php echo '<form method="POST" class="text-center">
+    <?php echo '<form method="GET" class="text-center">
                   <input type="search" name="personaggioInput" placeholder="Cerca un personaggio..." value="' .htmlspecialchars($search) . '">
                   <button type="submit">Cerca</button>
                 </form>'; ?>
@@ -54,17 +54,17 @@
 
     <!-- Navigazione tra pagine -->
     <?php if (empty($search)): ?> <!-- Mostra la paginazione solo quando NON si cerca un personaggio specifico -->
-      <form method="POST" class="text-center mt-2">
-        <button type="submit" class="button" name="page" value="<?= max(1, $page - 1) ?>" <?= ($page <= 1) ? 'disabled' : '' ?>>
+      <div class="text-center mt-2">
+        <a class="button" href="?personaggioInput=<?= urlencode($search) ?>&page=<?= max(1, $page-1) ?>" <?= $page<=1 ? 'aria-disabled="true"' : '' ?>>
           ⬅️ Precedente
-        </button>
+        </a>
 
         <span class="mx-2">Pagina <?= $page ?> di <?= $maxPages ?></span>
-        
-        <button type="submit" class="button" name="page" value="<?= min($maxPages, $page + 1) ?>" <?= ($page >= $maxPages) ? 'disabled' : '' ?>>
+
+        <a class="button" href="?personaggioInput=<?= urlencode($search) ?>&page=<?= min($maxPages, $page+1) ?>" <?= $page>=$maxPages ? 'aria-disabled="true"' : '' ?>>
           Successiva ➡️
-        </button>
-      </form>
+        </a>
+      </div>
     <?php endif; ?>
     
     <!-- Griglia dei personaggi -->

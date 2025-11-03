@@ -58,6 +58,14 @@ h1 {
 }
 
 .button {
+  text-decoration: none;
+  border: 1px solid black;
+  color: inherit;
   padding: 5px 10px;
   border-radius: 20px;
+}
+.button[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
